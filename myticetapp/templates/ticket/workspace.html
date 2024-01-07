@@ -1,0 +1,68 @@
+{% extends 'layout/base.html'%}
+{% load i18n static admin_soft %}
+{%load widget_tweaks%}
+
+{%block content%}
+<h3 style='border-bottom: 5px #cb0c9f solid;'>Workspace</h3>
+<div class="card">
+   
+    <div class="table-responsive">
+      <table class="table align-items-center mb-0">
+        <thead>
+          <tr>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ticket ID</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">title</th>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Created on</th>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Created by</th>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+           
+            {% for ticket in tickets  %}
+            <tr>
+            <td>
+                <div class="d-flex flex-column justify-content-center">
+                  <h6 class="mb-0 text-xs">J{{ticket.ticket_number}}</h6>
+                </div>
+            </td>
+            <td>
+              <p class="text-xs font-weight-bold mb-0">{{ticket.title}}</p>
+            </td>
+            <td class="align-middle text-center text-sm">
+              <span class="badge badge-sm">{{ticket.date_created}}</span>
+            </td>
+            <td class="align-middle text-center text-sm">
+                <span class="badge badge-sm bg-success">{{ticket.created_by}}</span>
+              </td>
+            {%if ticket.ticket_status == 'Active'%}
+            <td class="align-middle text-center text-sm">
+              <span class="badge badge-sm bg-success">Active</span>
+            </td>
+            {%elif ticket.ticket_status == 'Pending'%}
+            <td class="align-middle text-center text-sm">
+              <span class="badge badge-sm badge-warning">Pending</span>
+            </td>
+            {%elif ticket.ticket_status == 'Completed'%}
+            <td class="align-middle text-center text-sm">
+              <span class="badge badge-sm badge-danger">Completed</span>
+            </td>
+            {%endif%}
+            <td class="align-middle text-center text-sm " >
+              <a href='{% url 'ticket-details' ticket.pk %}'style='color:white;'>View Details</a>
+            </td>
+          
+          </tr>
+            {%endfor%}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  
+
+{%endblock content%}
+  
+  {% include 'include/footer.html' %}
+

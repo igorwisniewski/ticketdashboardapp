@@ -1,0 +1,89 @@
+{% extends "layout/base.html" %}
+{% load i18n static admin_soft %}
+{% block content %}
+{%if messages %}
+{%for message in messages%}
+ <div class="alert alert-danger" role="alert" style='color:white;'>
+     <strong>Hey there!</strong> 
+         <b>{{message}}</b>
+ </div>
+ {%endfor%}
+ {%endif%}
+
+ <div class="container">
+  <div class="row">
+    <div class="col-2">
+    
+    </div>
+    <div class="col-6">
+      <span>
+        <div class="card" class='justify-content-center'>
+          <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
+           ID : <span>{{ticket.ticket_number}}</span>
+          </div>
+        
+          <div class="card-body pt-2">
+            <span class="text-light text-L font-weight-bold my-2" > Title: {{ticket.title}}</span>
+             
+            <p class="card-description mb-4 "style='border-top: 1px #cb0c9f solid;'>
+              {{ticket.description}}
+            </p>
+            <div class="author align-items-center">
+              
+             <div cla ss="name ps-3">
+                <span class='text-light'>Date :  {{ticket.date_created}}</span>
+                <div class="stats">
+                  Assinged to :  {{ticket.assinged_to}}
+                </div>
+      
+                  <span > Is resolved:</span>
+                  {% if ticket.is_resolved%}
+                  <span class="badge badge-sm badge-danger text-light">Yes</span>
+                  {%else%}
+                  <span class="badge badge-sm badge-warning">No</span>
+                  
+                  {%endif%}
+                  {% if request.user.is_superuser and not ticket.is_resolved %}
+                  <div class='mb-2'> <a href='' class='btn btn-success text-light' data-bs-toggle="modal" data-bs-target="#completemodal"><b>Ticket Resolved</b></a></div>
+                  {%endif%}
+                  {% if request.user.is_authenticated  and not ticket.is_resolved%}
+                  <div class='mb-2'> <a href='{% url 'update-ticket' ticket.pk %}' class='btn btn-danger text-light'><b>Update Ticket</b></a></div>
+                  {%endif%}
+  
+                  <!-- Button trigger modal -->
+  
+  <!-- Modal -->
+              <div class="modal fade bg-dark" id="completemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered  bg-dark" role="document">
+                  <div class="modal-content  bg-dark">
+                    <div class="modal-header  bg-dark">
+                      <h5 class="modal-title  bg-dark" id="exampleModalLabel">Ticket completion</h5>
+                      <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body  bg-dark">
+                      Would you like to close the ticket?
+                    </div>
+                    <div class="modal-footer bg-dark">
+                      <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
+                      <a href='{% url 'closed-ticket' ticket.pk %}' class="btn bg-gradient-primary">Save changes</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+         </div>
+        </div>
+      </span>
+     </div>
+    <div class="col-2">
+    <span></span>
+    </div>
+  </div>
+
+
+            
+
+{% endblock content %}

@@ -1,0 +1,93 @@
+{% extends 'layout/base.html'%}
+{% load i18n static admin_soft %}
+{%load widget_tweaks%}
+
+{%block content%}
+<main class="main-content mt-0">
+    <section>
+      <div class="page-header min-vh-75">
+        <div class="container">
+          <div class="row">
+            <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
+              <div class="card card-plain mt-8">
+                <div class="card-header pb-0 text-left bg-transparent">
+           
+                  <h3 class="font-weight-bolder text-info text-gradient">
+                   Create a ticket
+                  </h3>
+        
+                </div>
+                <div class="card-body">
+                  <form role="form" method="POST">
+                        {% csrf_token%}
+
+                        <form role="form" method="POST">
+                            {% csrf_token%}
+                            <div class="form-group">
+                                <div class="form-group">
+                                <label for="title">Title</label>
+                               
+                                    {%render_field form.title class='form-control' %}
+                                </div>
+    
+                               <div class="form-group text-center mb-3">
+                                <label for="description">Description</label>
+                                {%render_field form.description class='form-control' %}
+                                <input type='submit' class='btn btn-primary btn-sm ' value='submit'>
+                            </div>
+                            
+                            
+                      </form>
+                    
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div
+                class="oblique position-absolute top-0 h-100 d-md-block d-none me-n8"
+              >
+                <div
+                  class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6"
+                  
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+{%endblock content%}
+  
+  {% include 'include/footer.html' %}  {% block
+  extrascript %}
+  <script type="application/javascript">
+    {% if form.username.errors %}
+        notification.danger("{{ form.username.errors }}", 'top', 'right');
+    {% endif %}
+    {% if form.password.errors %}
+        notification.danger("{{ form.password.errors }}", 'top', 'right');
+    {% endif %}
+  
+    {% if user.is_authenticated %}
+        var msg = "You are authenticated as {{ username }}, but are not authorized to " +
+            "access this page.Would you like to login to a different account ?"
+        notification.warning(msg, 'top', 'right');
+    {% endif %}
+  
+    {% if form.errors and not form.non_field_errors %}
+        {% if form.errors.items|length == 1 %}
+            notification.warning("{% trans "Please correct the error below." %}", 'top', 'right');
+        {% else %}
+            notification.warning("{% trans "Please correct the errors below." %}", 'top', 'right');
+        {% endif %}
+    {% endif %}
+  
+    {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+            notification.warning("{{ error|clean_text }}", 'top', 'right');
+        {% endfor %}
+    {% endif %}
+  </script>
+
